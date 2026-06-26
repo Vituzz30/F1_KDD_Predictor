@@ -1,90 +1,84 @@
-Formula 1 Race Outcome Prediction
+F1RaceOutcomePredictor
 
-Decision Support System (DSS) based on the KDD process for predicting top 10 finishes in the Turbo-Hybrid Era.
+Knowledge Discovery in Databases (KDD) project for Formula 1 race outcome classification using Machine Learning.
 
-This project applies the complete Knowledge Discovery in Databases (KDD) process to the domain of Formula 1, integrating historical data from 2014 to 2023 to train an advanced binary classifier (Random Forest). The model is capable of estimating the probability of success (Top 10) of a car relying exclusively on parameters known before the start of the race.
+Formula 1 Race Outcome Prediction via Knowledge Discovery in Databases (KDD)
 
-Project Objective
+Project Overview
 
-To develop an interactive, strategic pit wall tool (Decision Support System) that helps track engineers quantify risk and probabilities of success before the lights go out, by combining:
+This repository contains a structured data science project that applies the complete Knowledge Discovery in Databases (KDD) process to historical Formula 1 race data. The objective is to develop a predictive model capable of classifying whether a driver will finish in the top 10 (points-scoring positions), serving as a framework for a Race Decision Support System (DSS).
 
-Grid Position (Grid)
+The system implements a regularized Random Forest Classifier to extract competitive patterns from pre-race attributes (such as grid starting position, constructor competitiveness, and circuit specificities), prioritizing strategic reliability and real-time interpretability on the pit wall.
 
-Scuderia (Constructor)
+The KDD Process Workflow
 
-Circuit (Location)
+The project architecture strictly follows the standard KDD methodology, divided into six sequential phases:
 
-The global accuracy achieved is approximately 79.9% with perfectly balanced metrics (F1-Score of ~80.2%), positioning itself very close to the physical limit of predictability in a highly stochastic domain such as Formula 1.
+Data Selection: Targeting and integrating the required results, races, and constructor records from the Ergast API database to establish a stable baseline representing the modern Turbo-Hybrid Era (2014-present).
 
-KDD Project Structure in 6 Phases
+Data Pre-processing: Mitigating data leakage by removing in-race parameters, cleaning missing values, and executing exploratory boxplot analysis to isolate the statistical signal of starting grid positions.
 
-Phase 1: Data Selection
+Data Transformation: Data preparation via One-Hot Encoding for categorical variables (scuderias and circuits), stratified splitting into training (80%) and testing (20%) partitions to preserve class balance, and Z-score standardization for the starting grid feature.
 
-Cascade relational integration of the results.csv, races.csv, and constructors.csv tables (Ergast API via Kaggle).
+Data Mining: Algorithmic extraction of competitive patterns using an ensemble Random Forest Classifier with maximum tree depth restrictions to control model complexity and prevent overfitting.
 
-Temporal scoping: Exclusive selection of the Turbo-Hybrid Era (2014-present) to ensure the technological coherence of the dataset.
+Evaluation and Interpretation: Performance evaluation prioritizing the F1-Score (80.22%) and balanced Precision/Recall over global accuracy to prevent directional bias. Interpretation is supported by analyzing the physical limits of predictability under highly stochastic race conditions.
 
-Phase 2: Data Pre-processing & Prevention of Data Leakage
+Use of Discovered Knowledge: Operational deployment in a low-latency Decision Support System (DSS) using interactive widgets with continuous update protection to simulate real-time pit wall decision-making.
 
-Creation of the target binary variable target_points (1 if finishing position ≤ 10, 0 otherwise).
+Repository Structure
 
-Removal of in-race variables (laps, times, status/retirements) to prevent Data Leakage.
+The project is organized into the following essential files:
 
-Data cleaning (pit-lane starts indicated by grid=0 and null values represented by \N).
+progetto_f1.ipynb - The primary Jupyter Notebook containing the segmented KDD phases and executable Python code.
 
-Phase 3: Data Transformation
+fase_6_ottimizzata.py - The optimized Python script implementing the interactive DSS simulator.
 
-One-Hot Encoding to handle categorical variables (Scuderie and Circuits) while avoiding the Dummy Variable Trap.
+README.md - Project documentation and deployment instructions.
 
-Stratified splitting of the dataset (80% Training, 20% Testing) to keep the class distribution unaltered.
+.gitignore - Git exclusion rules for virtual environments, raw CSV datasets, and Python cache files.
 
-Standardization of the grid feature using StandardScaler.
+Dataset Attributes
 
-Phase 4: Data Mining
+The machine learning model processes the following features extracted from the historical dataset:
 
-Training of a Random Forest Classifier (100 estimators, maximum depth limited to 10 to prevent overfitting).
+grid - Starting position of the car on the grid (1 to 20).
 
-Handling class imbalance using class_weight='balanced'.
+name_constructor - The official name of the constructor/scuderia.
 
-Phase 5: Evaluation and Interpretation
+circuitId - The unique identifier of the race track.
 
-Evaluation via a symmetric Confusion Matrix (TN: 351, FP: 93, FN: 87, TP: 365).
+target_points - Diagnostic target representing the race outcome (1 = finished in the Top 10; 0 = finished outside the points).
 
-Analysis of the impossibility of reaching 100% accuracy due to random on-track events (Safety Cars, weather, mechanical failures).
+Installation and Setup
 
-Phase 6: Deployment & DSS
+Prerequisites
 
-Development of the optimized simula_gara_veloce() function.
+Ensure you have Python 3.8 or a later version installed on your operating system.
 
-Implementation of an interactive panel in Jupyter Notebook using ipywidgets for real-time inference without computational lag.
+Environment Configuration
 
-Requirements and Installation
+To prevent dependency conflicts, it is recommended to deploy the project within an isolated virtual environment. Follow these steps in order:
 
-To reproduce the project locally and use the interactive DSS, follow these steps:
+Clone or download this repository to your local machine.
 
-Clone the repository:
+Open your terminal or command prompt inside the project directory.
 
-git clone [https://github.com/YourUsername/YourRepositoryName.git](https://github.com/YourUsername/YourRepositoryName.git)
-cd YourRepositoryName
+Execute the following commands to set up and activate the virtual environment:
 
-
-Create and activate a Python virtual environment:
-
+# Create a virtual environment named 'f1_env'
 python -m venv f1_env
-# On Windows (PowerShell):
-.\f1_env\Scripts\Activate.ps1
-# On Mac/Linux:
+
+# Activate the environment (Windows Command Prompt / PowerShell)
+f1_env\Scripts\activate
+
+# Activate the environment (macOS / Linux)
 source f1_env/bin/activate
 
 
-Install the required dependencies:
+Install all the required Python libraries and dependencies:
 
 pip install pandas numpy matplotlib seaborn scikit-learn ipywidgets
 
 
-Start the Notebook:
-Open the main .ipynb file in VS Code (or Jupyter Lab), making sure to select the kernel of the newly created virtual environment f1_env.
-
-Author
-
-Your Name - Model Development & KDD Integration
+Launch VS Code or Jupyter Notebook, select the f1_env kernel, and run the cells in progetto_f1.ipynb to explore the project.
