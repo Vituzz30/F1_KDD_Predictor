@@ -61,5 +61,6 @@ python -m venv f1_env
 # Activate the environment (Windows Command Prompt / PowerShell)
 .\f1_env\Scripts\activate
 
-# Activate the environment (macOS / Linux)
+# Activate the environment
+ (macOS / Linux)
 source f1_env/bin/activate
